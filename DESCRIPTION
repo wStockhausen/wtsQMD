@@ -1,8 +1,8 @@
 Package: wtsQMD
 Type: Package
 Title: Functions for Quarto documents (QMDs)
-Version: 2023.07.08
-Date: 2023-07-08
+Version: 2023.07.12
+Date: 2023-07-12
 Author: William T. Stockhausen
 Maintainer: <william.stockhausen@noaa.gov>
 Description: Some helpful functions when creating Querto documents.
@@ -11,6 +11,8 @@ Imports:
     kableExtra,
     knitr,
     tibble
+Suggests:
+    wtsMarkdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown=TRUE)

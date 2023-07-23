@@ -2,9 +2,9 @@
 % Please edit documentation in R/formatFunctions.R
 \name{num}
 \alias{num}
-\title{Pretty format for a vector of numbers}
+\title{Apply a pretty number format to a mixed vector of numbers and strings}
 \usage{
-num(x, d = 0)
+num(x, d = 1, n = 0)
 }
 \arguments{
 \item{x}{\itemize{
@@ -14,14 +14,26 @@ num(x, d = 0)
 \item{d}{\itemize{
 \item number of significant digits to keep
 }}
+
+\item{n}{\itemize{
+\item number of "small" digits
+}}
 }
 \value{
 character vector
 }
 \description{
-Function to apply a pretty format to number
+Function to apply a pretty format to a mixed vector of numbers and strings.
 }
 \details{
-applies (base)\link{format} with format=f, big.mark=",",digits=\code{d}.
+Character strings that do not represent a number are returned 'as is'.
+For numbers (or strings that can be converted to numbers using \code{\link[=strinpNumSyms]{strinpNumSyms()}}),
+\code{\link[base:format]{base::format()}} with format=f, big.mark=",",digits=\code{d}, and nsmall=\code{n} is
+applied to the numeric value.
+\code{d} determines the minimum number of significant digits to be printed. All digits to
+the left of the decimal place will be printed; if necessary, digits to the right of the decimal place
+will be printed to make up \code{d} total digits.
+\code{n} determines the minimum number of digits printed to the right of the decimal place, regardless
+of \code{d}.
 NAs are represented as "--".
 }

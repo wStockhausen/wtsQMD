@@ -1,22 +1,32 @@
-#' @title Pretty format for a vector of numbers
-#' @description Function to apply a pretty format to number
+#' @title Apply a pretty number format to a mixed vector of numbers and strings
+#' @description Function to apply a pretty format to a mixed vector of numbers and strings.
 #' @param x - vector (numeric or character) of numbers to apply pretty format to
 #' @param d - number of significant digits to keep
+#' @param n - number of "small" digits
 #' @return character vector
-#' @details applies (base)[format] with format=f, big.mark=",",digits=\code{d}.
+#' @details Character strings that do not represent a number are returned 'as is'.
+#' For numbers (or strings that can be converted to numbers using [strinpNumSyms()]),
+#' [base::format()] with format=f, big.mark=",",digits=\code{d}, and nsmall=\code{n} is
+#' applied to the numeric value.
+#' \code{d} determines the minimum number of significant digits to be printed. All digits to
+#' the left of the decimal place will be printed; if necessary, digits to the right of the decimal place
+#' will be printed to make up \code{d} total digits.
+#' \code{n} determines the minimum number of digits printed to the right of the decimal place, regardless
+#' of \code{d}.
 #' NAs are represented as "--".
+#'
 #' @export
 #'
-num<-function(x,d=0){
+num<-function(x,d=1,n=0){
   nx = length(x);
-  r = vector(mode="character",length=nx);
-  x = stripNumSyms(x);#--strip any symbols
+  r = as.character(x);
+  xp = stripNumSyms(x);#--strip any symbols
   for (i in 1:nx) {
-    y = x[i];
+    y = xp[i];
     if (is.na(y)) {
       r[i] = x[i];
     } else {
-      r[i] = formatC(y,format="f",big.mark=",",digits=d)
+      r[i] = format(y,format="f",big.mark=",",digits=d,nsmall=n)
     }
   }
   r[is.na(r)] = "--";
@@ -39,7 +49,7 @@ fmtT<-function(x,digits=0){
 
 #'
 #' @title Determine Tier level from stock status value
-#' @description Function to etermine Tier level from stock status value.
+#' @description Function to determine Tier level from stock status value.
 #' @param status - stock status value (i.e., B/$B_{MSY}$)
 #' @return string with tier level ("a", "b", or "c")
 #' @details Tier level is determined from status by:

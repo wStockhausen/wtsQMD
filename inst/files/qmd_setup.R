@@ -1,19 +1,35 @@
 #--setup code for qmd file
   require(wtsQMD);
 
-  #--determine folder paths
-  root = knitr::opts_knit$get("root.dir");
-  if (is.null(root))
-    root = ".";#--for testing running individual chunks
-  if (rstudioapi::isAvailable())
-    root = dirname(rstudioapi::getActiveDocumentContext()$path);
-  dirFigs = file.path(root,"figures",dirname(knitr::fig_path()));
-  if(!dir.exists(dirFigs)) dir.create(dirFigs,recursive=TRUE);
-  dirTbls = file.path(root,"tables",dirname(knitr::fig_path()));
-  if(!dir.exists(dirTbls)) dir.create(dirTbls,recursive=TRUE);
+  if (!exists("testing")) testing=TRUE;
 
+  #--determine folder paths
   child_path=fastmap::faststack();#--stack object with methods push, pop, peek
-  child_path$push(root);#--set toplevel folder
+  root = knitr::opts_knit$get("root.dir");
+  if (testing) cat("root = '",root,"'\n\n",sep="");
+  if (is.null(root)||(root=="")){
+    if (testing) cat("root is NULL or empty\n\n",sep="");
+    #--for testing running individual chunks
+    if (rstudioapi::isAvailable()) {#--use folder of active document
+      if (testing) cat("Setting child_path to active document path.\n\n")
+      child_path$push(dirname(rstudioapi::getActiveDocumentContext()$path));
+    } else {
+      if (testing) cat("Setting child_path to '.'.\n\n")
+      child_path$push(".");#--default to current folder
+    }
+  } else {
+    if (testing) cat("Setting child_path to root.\n\n")
+    child_path$push(root);#--set toplevel folder to root
+  }
+  if (testing){
+    cat("In qmd_setup:\n\n");
+    cat("root = '",root,"'\n\n",sep="");
+    cat("peek = '",child_path$peek(),"'\n\n",sep="");
+  }
+  dirFigs = file.path(child_path$peek(),"figures",dirname(knitr::fig_path()));
+  if(!dir.exists(dirFigs)) dir.create(dirFigs,recursive=TRUE);
+  dirTbls = file.path(child_path$peek(),"tables",dirname(knitr::fig_path()));
+  if(!dir.exists(dirTbls)) dir.create(dirTbls,recursive=TRUE);
 
   #--constants
   MILLION=1000000;

@@ -15,7 +15,7 @@ getTierLevel(status)
 string with tier level ("a", "b", or "c")
 }
 \description{
-Function to etermine Tier level from stock status value.
+Function to determine Tier level from stock status value.
 }
 \details{
 Tier level is determined from status by:

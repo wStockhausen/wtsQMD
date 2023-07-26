@@ -12,12 +12,13 @@ numT(x)
 }}
 }
 \value{
-character vector
+character vector of formatted numbers, with ' t' appended to indicate units
 }
 \description{
 Function to apply a pretty format for numbers in metric tons.
 }
 \details{
 Values >= 1000 are rounded to single ones, values > 100 are formatted
-with 2 decimal places, values >0 are formatted with 3 decimal places.
+with 1 decimal places, values >10 are formatted with 2 decimal places,
+values > 0 are formatted with 3 decimal places.
 }

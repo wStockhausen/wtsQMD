@@ -6,7 +6,7 @@
 #' @return character vector
 #' @details Character strings that do not represent a number are returned 'as is'.
 #' For numbers (or strings that can be converted to numbers using [strinpNumSyms()]),
-#' [base::format()] with format=f, big.mark=",",digits=\code{d}, and nsmall=\code{n} is
+#' [base::format()] with format='f', big.mark=',',digits=\code{d}, and nsmall=\code{n} is
 #' applied to the numeric value.
 #' \code{d} determines the minimum number of significant digits to be printed. All digits to
 #' the left of the decimal place will be printed; if necessary, digits to the right of the decimal place
@@ -37,14 +37,15 @@ num<-function(x,d=1,n=0){
 #' @title Format numeric 'x' to specified number of digits
 #' @description Function to format numeric 'x' to specified number of digits.
 #' @param x - numeric vector
-#' @param digits - number of significant digits for output (default = 0)
+#' @param d - number of significant digits for output (default = 0)
 #' @return character vector with formatted values
-#' @details Shortcut to [base::formatC()] function
+#'
+#' @details Shortcut to [base::formatC()] function using format='f', big.mark=',',digits=\code{d}
 #'
 #' @export
 #'
-fmtT<-function(x,digits=0){
-  formatC(x,digits=digits,big.mark=",",format="f");
+fmtT<-function(x,d=0){
+  formatC(x,digits=d,big.mark=",",format="f");
 }
 
 #'
@@ -124,16 +125,18 @@ stripNumSyms<-function(x){
 #' @title Apply a pretty format for numbers in metric tons
 #' @description Function to apply a pretty format for numbers in metric tons.
 #' @param x - vector (numeric or character) of numbers to apply pretty format to
-#' @return character vector
+#' @return character vector of formatted numbers, with ' t' appended to indicate units
+#'
 #' @details Values >= 1000 are rounded to single ones, values > 100 are formatted
-#' with 2 decimal places, values >0 are formatted with 3 decimal places.
+#' with 1 decimal places, values >10 are formatted with 2 decimal places,
+#' values > 0 are formatted with 3 decimal places.
 #' @export
 numT<-function(x){
   if (is.character(x)) x = stripNumSyms(x);
-  if (x>=1e3) return(paste0(num(x,d=0)," t"));
-  if (x>=1e2) return(paste0(num(x,d=2)," t"));
-  if (x>=1e1) return(paste0(num(x,d=3)," t"));
-  if (x>0)    return(paste0(num(x,d=3)," t"));
+  if (x>=1e3) return(paste0(num(x,n=0)," t"));
+  if (x>=1e2) return(paste0(num(x,n=1)," t"));
+  if (x>=1e1) return(paste0(num(x,n=2)," t"));
+  if (x>0)    return(paste0(num(x,n=3)," t"));
   return(paste0(prettyNum(x)," t"));
 }
 

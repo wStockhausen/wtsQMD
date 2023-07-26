@@ -4,14 +4,14 @@
 \alias{fmtT}
 \title{Format numeric 'x' to specified number of digits}
 \usage{
-fmtT(x, digits = 0)
+fmtT(x, d = 0)
 }
 \arguments{
 \item{x}{\itemize{
 \item numeric vector
 }}
 
-\item{digits}{\itemize{
+\item{d}{\itemize{
 \item number of significant digits for output (default = 0)
 }}
 }
@@ -22,5 +22,5 @@ character vector with formatted values
 Function to format numeric 'x' to specified number of digits.
 }
 \details{
-Shortcut to \code{\link[base:formatc]{base::formatC()}} function
+Shortcut to \code{\link[base:formatc]{base::formatC()}} function using format='f', big.mark=',',digits=\code{d}
 }

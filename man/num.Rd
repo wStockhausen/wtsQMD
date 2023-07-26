@@ -28,7 +28,7 @@ Function to apply a pretty format to a mixed vector of numbers and strings.
 \details{
 Character strings that do not represent a number are returned 'as is'.
 For numbers (or strings that can be converted to numbers using \code{\link[=strinpNumSyms]{strinpNumSyms()}}),
-\code{\link[base:format]{base::format()}} with format=f, big.mark=",",digits=\code{d}, and nsmall=\code{n} is
+\code{\link[base:format]{base::format()}} with format='f', big.mark=',',digits=\code{d}, and nsmall=\code{n} is
 applied to the numeric value.
 \code{d} determines the minimum number of significant digits to be printed. All digits to
 the left of the decimal place will be printed; if necessary, digits to the right of the decimal place

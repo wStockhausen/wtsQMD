@@ -4,7 +4,16 @@
 \alias{convert_tblr_to_kbl}
 \title{Convert \link{tables} \code{tabular} object to \link{knitr} \code{kable} object}
 \usage{
-convert_tblr_to_kbl(tblr, col_spec, isHTM)
+convert_tblr_to_kbl(
+  tblr,
+  col_spec,
+  isHTM = NULL,
+  isPDF = NULL,
+  scale_down = FALSE,
+  ltx_font_size = NULL,
+  replaceNAs = NULL,
+  adjColSpacing = 0
+)
 }
 \arguments{
 \item{tblr}{\itemize{
@@ -16,7 +25,27 @@ convert_tblr_to_kbl(tblr, col_spec, isHTM)
 }}
 
 \item{isHTM}{\itemize{
-\item flag indicating whether output is for html (or pdf)
+\item flag indicating whether output is for html (any value indicates TRUE; default=NULL)
+}}
+
+\item{isPDF}{\itemize{
+\item flag indicating whether output is for pdf (any value indicates TRUE; default=NULL)
+}}
+
+\item{scale_down}{\itemize{
+\item flag to scale font size down to fit table within margins (works only for pdf, i.e. \code{isHTM=FALSE})
+}}
+
+\item{ltx_font_size}{\itemize{
+\item font size for latex table (NULL gives default font size)
+}}
+
+\item{replaceNAs}{\itemize{
+\item string to replace NAs with (default=NULL does nothing)
+}}
+
+\item{adjColSpacing}{\itemize{
+\item value to adjust latex column spacing by (default=0; default column spacing = 6)
 }}
 }
 \value{
@@ -26,5 +55,5 @@ convert_tblr_to_kbl(tblr, col_spec, isHTM)
 Function to convert \link{tables} \code{tabular} object to \link{knitr} \code{kable} object.
 }
 \details{
-TBD.
+If \code{isHTM} and \code{isPDF} are both NULL (the defaults), the conversion will be to html.
 }

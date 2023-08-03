@@ -92,7 +92,7 @@ crabYear<-function(year){
   warn = getOption("warn");
   options(warn=-1);
     year = as.numeric(year);
-    str<-paste(year,'/',(year+1)%%100,sep='');
+    str<-paste(year,'/',wtsUtilities::formatZeros((year+1)%%100,2),sep='');
   options(warn=warn);
   return(str);
 }

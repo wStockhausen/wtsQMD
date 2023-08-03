@@ -15,14 +15,14 @@
 #'
 escapeChars<-function(x,env="latex"){
   if (env=="latex"){
-    x=gsub("\\&","&",x,fixed=TRUE); #--unescape first
-    x=gsub("&","\\&",x,fixed=TRUE);
+    x=gsub("\\&","&",x,fixed=TRUE); #--unescape any already escaped first
+    x=gsub("&","\\&",x,fixed=TRUE); #--escape all
 
-    x=gsub("\\%","%",x,fixed=TRUE); #--unescape first
-    x=gsub("%","\\%",x,fixed=TRUE);
+    x=gsub("\\%","%",x,fixed=TRUE); #--unescape any already escaped first
+    x=gsub("%","\\%",x,fixed=TRUE); #--escape all
 
-    x=gsub("\\_","_",x,fixed=TRUE); #--unescape first
-    x=gsub("_","\\_",x,fixed=TRUE);
+    x=gsub("\\_","_",x,fixed=TRUE); #--unescape any already escaped first
+    x=gsub("_","\\_",x,fixed=TRUE); #--escape all
   }
   return(x);
 }

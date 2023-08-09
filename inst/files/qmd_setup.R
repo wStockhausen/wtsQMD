@@ -33,22 +33,23 @@
 
   #--constants
   MILLION=1000000;
-  THOUSAND=1000;#--convert kg to t
+  THOUSAND=1000;     #--convert kg to t
+  LBStoKG = 0.453592;#--convert lbs to kg
 
   #--rendering info
   isPDF = wtsQMD::isOutputPDF();
   isHTM = wtsQMD::isOutputHTML();
 
   #--default figure values (TODO: put these as param elements in yaml?)
-  def_ext = "pdf";
+  def_ext = "png";
   def_dpi = 100; #--default dpi
-  def_asp = 2.0; #--default figure aspect (h = w/asp)
-  def_wid = 6.5; #--default width, in inches
-  if (isHTM){
-    def_ext = "png";
+  def_asp = 1.4; #--default figure aspect (h = w/asp)
+  def_wid = 8.0; #--default width, in inches
+  if (isPDF){
+    def_ext = "pdf";
     def_dpi = 100; #--default dpi
-    def_asp = 1.4; #--default figure aspect (h = w/asp)
-    def_wid = 8.0; #--default width, in inches
+    def_asp = 2.0; #--default figure aspect (h = w/asp)
+    def_wid = 6.5; #--default width, in inches
   }
 
   #--empty lists for tables, figures to be printed at end of document

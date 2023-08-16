@@ -41,8 +41,9 @@ convert_tblr_to_kbl<-function(tblr,col_spec,isHTM=NULL,isPDF=NULL,
   } else {
     save = tables::table_options();                               #--saves default options
     tables::table_options(tabular="longtable",justification="r"); #--modifies tables::table_options()
-    latex_options=c("striped","repeat_header");
-    if (scale_down) latex_options = c(latex_options,"scale_down");
+    latex_options="repeat_header";
+    if (nrow(tblr)>1) latex_options = c(latex_options,"striped");
+    if (scale_down)   latex_options = c(latex_options,"scale_down");
     kbl = tblr |> tables::toKable(booktabs=FALSE) |>
                    kableExtra::kable_styling(latex_options=latex_options,
                                              font_size=ltx_font_size);

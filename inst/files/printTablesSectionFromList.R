@@ -12,7 +12,8 @@
           cat("\n\n##",lst$section,"{-}\n\n\\FloatBarrier\n\n");
           ctr = ctr+1;
       } else {
-        if (knitr::is_latex_output() && !is.null(lst$ori)) {
+        lscp = knitr::is_latex_output() && !(is.null(lst$ori)||(stringr::str_starts(tolower(lst$ori),"p")));
+        if (lscp) {
           # cat("\\KOMAoptions{paper=landscape,pagesize}\n",
           #     "\\recalctypearea\n\n");
           # cat("\\begin{landscape}\n\n");
@@ -24,10 +25,12 @@
             cat(lst$tbl); cat("\n");
             cat("`````\n\n");
         } else if (knitr::is_latex_output()){
+          lscp = !(is.null(lst$ori)||(stringr::str_starts(tolower(lst$ori),"p")));
+          #cat("lscp=",lscp,"lst$ori=",lst$ori,"\n\n")
           if (!is.null(lst$fontsize)) cat(paste0("\\begin{",lst$fontsize,"}\n\n"));
-          if (!is.null(lst$ori)) cat("\\begin{landscape}\n\n");
+          if (lscp) cat("\\begin{landscape}\n\n");
           cat(lst$tbl); cat("\n");
-          if (!is.null(lst$ori)) cat("\\end{landscape}\n\n");
+          if (lscp) cat("\\end{landscape}\n\n");
           if (!is.null(lst$fontsize)) cat(paste0("\\end{",lst$fontsize,"}\n\n"));
         }
         cat(":::\n");

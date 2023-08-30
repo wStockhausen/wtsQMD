@@ -1,6 +1,19 @@
 #--print tables section from list in lstTbls
+  if (!exists("reorderTables")) reorderTables = FALSE;
   nTbls = length(lstTbls);
   if (nTbls>0){
+    if (reorderTables){
+      fn = "r_reorderTbls.csv";
+      if (file.exists(fn)){
+        dfr = readr::read_csv(fn);
+        nr = nrow(dfr);
+        if (nr!=nTbls) {
+          warning("Cannot reorder tables: incompatible number of tables!");
+        } else {
+          lstTbls = lstTbls[dfr$lbl];
+        }
+      } else warning("Tables not reordered. 'r_reorderTbls.csv' dos not exist.")
+    }
     ctr = 0;
     cat("{{< pagebreak >}}\n\n")
     cat("# Tables {-}\n\n")
@@ -52,6 +65,7 @@
         tmplst[[nm]] = tibble::as_tibble(lst) |> dplyr::select(!tbl);
     }
     dfrTbls = dplyr::bind_rows(tmplst);
-    readr::write_csv(dfrTbls,file.path(child_path$peek(),"q00_LabelInfoTbls.csv"));
+    readr::write_csv(dfrTbls,file.path(child_path$peek(),"r_ListForTablesInfo.csv"));
+    wtsUtilities::saveObj(lstTbls,file.path(child_path$peek(),"r_ListForTables.RData"));
     rm(tmplst,lst,dfrTbls);
   }

@@ -181,10 +181,20 @@ numM<-function(x){
 #' @details - Uses [stripNumSyms()] (if necessary) and [numT()].
 #' @export
 #'
-numKG2T<-function(x){
+numKGinT<-function(x){
   if (is.character(x)) x = stripNumSyms(x);
   x = x/1000;
   return(numT(x));
 }
 
-
+#' @title Apply a pretty format to numbers in 1000s t, converted to t
+#' @description Function to apply a pretty format to numbers in 1000s, converted to t.
+#' @param x - numeric or character vector in 1000s t
+#' @return - character vector in t, formatted using [numT()]
+#' @details - Uses [stripNumSyms()] (if necessary) and [numT()].
+#' @export
+#'
+numKTinT<-function(x){
+  if (is.character(x)) x = stripNumSyms(x);
+  return(numT(1000*x));
+}

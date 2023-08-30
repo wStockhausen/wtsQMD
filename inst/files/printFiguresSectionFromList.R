@@ -1,6 +1,19 @@
 #--print figures section from list in lstFigs
+if (!exists("reorderFigures")) reorderFigures = FALSE;
   nFigs = length(lstFigs);
   if (nFigs>0){
+    if (reorderFigures){
+      fn = "r_reorderFigs.csv";
+      if (file.exists(fn)){
+        dfr = readr::read_csv(fn);
+        nr = nrow(dfr);
+        if (nr!=nFigs) {
+          warning("Cannot reorder figures: incompatible number of figures!");
+        } else {
+          lstFigs = lstFigs[dfr$lbl];
+        }
+      } else warning("Tables not reordered. 'r_reorderTbls.csv' dos not exist.")
+    }
     ctr = 0;
     if (length(lstTbls)==0) cat("{{< pagebreak >}}\n\n");
     cat("# Figures {-}\n\n")
@@ -14,6 +27,8 @@
           cat("\n\n##",lst$section,"{-}\n\n\\FloatBarrier\n\n");
           ctr = ctr+1;
         } else {
+          lscp = knitr::is_latex_output()&&(!(is.null(lst$ori)||(stringr::str_starts(tolower(lst$ori),"p"))));
+          if (lscp) cat("\\landscape\n\n");
           cat("::: {.cell}\n",sep="")
           cat("::: {.cell-output-display}\n");
           cat("![",lst$cap,"](",wtsUtilities::abs_to_rel(lst$pth,root),"){#",lst$lbl,sep="");
@@ -22,6 +37,7 @@
           cat("}\n");
           cat(":::\n");
           cat(":::\n\n");
+          if (lscp) cat("\\endlandscape\n\n");
           ctr = ctr+1;
           if (ctr!=last) cat("{{< pagebreak >}}\n\n");#--insert page break
         }
@@ -34,6 +50,7 @@
         tmplst[[nm]] = tibble::as_tibble(lst);
     }
     dfrFigs = dplyr::bind_rows(tmplst);
-    readr::write_csv(dfrFigs,file.path(child_path$peek(),"q00_LabelInfoFigs.csv"));
+    readr::write_csv(dfrFigs,file.path(child_path$peek(),"r_ListForFiguresInfo.csv"));
+    wtsUtilities::saveObj(lstFigs,file.path(child_path$peek(),"r_ListForFigures.RData"));
     rm(ctr,tmplst,lst,dfrFigs);
   }

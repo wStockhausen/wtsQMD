@@ -3,8 +3,8 @@
 #' @description Function to convert [tables] \code{tabular} object to [knitr] \code{kable} object.
 #' @param tblr - [tables] \code{tabular} object to convert
 #' @param col_spec - vector of column ids to apply "border_right" to using [kableExtra::column_spec()]
-#' @param isHTM - flag indicating whether output is for html (any value indicates TRUE; default=NULL)
-#' @param isPDF - flag indicating whether output is for pdf (any value indicates TRUE; default=NULL)
+#' @param isHTM - flag indicating whether output is for html (any value other than FALSE indicates TRUE; default=NULL)
+#' @param isPDF - flag indicating whether output is for pdf (default=NULL; NULL indicates FALSE)
 #' @param scale_down - flag to scale font size down to fit table within margins (works only for pdf, i.e. \code{isHTM=FALSE})
 #' @param ltx_font_size - font size for latex table (NULL gives default font size)
 #' @param replaceNAs - string to replace NAs with (default=NULL does nothing)

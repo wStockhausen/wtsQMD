@@ -25,11 +25,11 @@ convert_tblr_to_kbl(
 }}
 
 \item{isHTM}{\itemize{
-\item flag indicating whether output is for html (any value indicates TRUE; default=NULL)
+\item flag indicating whether output is for html (any value other than FALSE indicates TRUE; default=NULL)
 }}
 
 \item{isPDF}{\itemize{
-\item flag indicating whether output is for pdf (any value indicates TRUE; default=NULL)
+\item flag indicating whether output is for pdf (default=NULL; NULL indicates FALSE)
 }}
 
 \item{scale_down}{\itemize{

@@ -4,7 +4,7 @@
 \alias{num}
 \title{Apply a pretty number format to a mixed vector of numbers and strings}
 \usage{
-num(x, d = 1, n = 0)
+num(x, d = 1, n = 0, sci = FALSE)
 }
 \arguments{
 \item{x}{\itemize{
@@ -17,6 +17,10 @@ num(x, d = 1, n = 0)
 
 \item{n}{\itemize{
 \item number of "small" digits
+}}
+
+\item{sci}{\itemize{
+\item flag for scientific notation (default = FALSE)
 }}
 }
 \value{

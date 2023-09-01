@@ -3,6 +3,7 @@
 #' @param x - vector (numeric or character) of numbers to apply pretty format to
 #' @param d - number of significant digits to keep
 #' @param n - number of "small" digits
+#' @param sci - flag for scientific notation (default = FALSE)
 #' @return character vector
 #' @details Character strings that do not represent a number are returned 'as is'.
 #' For numbers (or strings that can be converted to numbers using [strinpNumSyms()]),
@@ -17,7 +18,7 @@
 #'
 #' @export
 #'
-num<-function(x,d=1,n=0){
+num<-function(x,d=1,n=0,sci=FALSE){
   nx = length(x);
   r = as.character(x);
   xp = stripNumSyms(x);#--strip any symbols
@@ -26,7 +27,7 @@ num<-function(x,d=1,n=0){
     if (is.na(y)) {
       r[i] = x[i];
     } else {
-      r[i] = format(y,format="f",big.mark=",",digits=d,nsmall=n)
+      r[i] = format(y,format="f",big.mark=",",digits=d,nsmall=n,scientific=sci);
     }
   }
   r[is.na(r)] = "--";
@@ -198,3 +199,17 @@ numKTinT<-function(x){
   if (is.character(x)) x = stripNumSyms(x);
   return(numT(1000*x));
 }
+
+#' @title Apply a pretty format to numbers in t, converted to 1000s t
+#' @description Function to apply a pretty format to numbers in t, converted to 1000s t.
+#' @param x - numeric or character vector in t
+#' @return - character vector in 1000s t, formatted using [numKT()]
+#' @details - Uses [stripNumSyms()] (if necessary) and [numKT()].
+#' @export
+#'
+numTinKT<-function(x){
+  if (is.character(x)) x = stripNumSyms(x);
+  return(numKT(x/1000));
+}
+
+

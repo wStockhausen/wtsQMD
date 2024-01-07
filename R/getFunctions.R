@@ -20,6 +20,23 @@ getLabel<-function(xtra=NULL){
   return(lbl);
 }
 #'
+#' @title Get a Quarto/knitr chunk figure caption
+#' @description Function to get a Quarto/knitr chunk figure caption.
+#' @param xtra - extra string to  add to caption
+#' @return a string
+#' @details If the function is not run within the context of a knitr chunk,
+#' then 'Figure' is used as the default caption.
+#' @importFrom knitr opts_current
+#' @export
+#'
+getFigCaption<-function(xtra=NULL){
+  cap = knitr::opts_current$get("fig.cap");
+  if (is.null(cap)) cap = "Figure";
+  if (!is.null(xtra))
+    cap = paste0(cap,xtra);
+  return(cap);
+}
+#'
 #' @title Create an appropriate filename for a figure
 #' @description Function to create an appropriate filename for a figure.
 #' @param xtra - extra string to add to default filename

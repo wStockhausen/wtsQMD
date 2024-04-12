@@ -19,7 +19,9 @@
 #' @md
 #' @export
 convert_tblr_to_kbl<-function(tblr,col_spec,isHTM=NULL,isPDF=NULL,
-                              scale_down=FALSE,ltx_font_size=NULL,replaceNAs=NULL,
+                              scale_down=FALSE,
+                              ltx_font_size=NULL,
+                              replaceNAs=NULL,
                               adjColSpacing=0){
   nr = nrow(tblr);
   if (is.null(isHTM)&is.null(isPDF)) {

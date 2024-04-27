@@ -1,0 +1,223 @@
+---
+title: "Tables Template"
+author: "William T. Stockhausen"
+institute: NOAA/NMFS/AFSC
+date: '`r format(Sys.time(), "%b %e, %Y")`'
+fontsize: 11pt 
+number-sections: true
+reference-location: document
+reference-section-title: References
+#bibliography: ../Bibliography/bib_TannerCrab-SAFE-doc.bib
+crossref:
+  chapters: false      # prepend label reference numbers by chater number?
+  fig-title: Figure    # for caption: default is "Figure")
+  tbl-title: Table     # for caption: default is "Table")
+  title-delim: "."     # for caption: default is ":")
+  fig-prefix: Figure   # for in-text (use [-@fig-ref] to drop prefix in text)
+  tbl-prefix: Table    # for in-text (use [-@tbl-ref] to drop prefix in text)
+  fig-labels: arabic    # options are arabic, roman, roman i, alpha x, alpha X; latter two starting from x/X
+  tbl-labels: arabic    # options are arabic, roman, roman i, alpha x, alpha X; latter two starting from x/X
+  subref-labels: alpha a # options are arabic, roman, roman i, alpha x, alpha X; latter two starting from x/X
+  ref-hyperlink: true    # references are hyperlinked if true
+format: 
+  html: 
+    df-print: paged
+    toc: true
+    toc-location: right
+    fig-width: 8
+    fig-asp: 1.4
+    fig-dpi: 100
+  pdf:
+    documentclass: scrartcl
+    toc: false
+    fig_crop: false
+    keep-tex: false
+    geometry:
+      - left=1.0in
+      - right=1.0in
+      - top=1.0in
+      - bottom=1.0in
+      - textwidth=6.5in
+      - showframe=false
+    include-in-header: 
+      - text: |
+          \usepackage{placeins}
+          \extrafloats{500}
+          \maxdeadcycles=10000
+      - file: ../Text/ltx_ExtraLatexIncludes.tex
+echo: false
+warning: false
+results: 'hide'
+keep-md: false
+keep-tex: false
+keep-yaml: false
+editor: source
+editor_options: 
+  chunk_output_type: console
+concordance: true
+params:
+  setup: !expr 'system.file("files/qmd_setup.R",package="wtsQMD")'
+  testing: false
+---
+<!-- IMPORTANT: if used as a child doc, all chunk labels must be unique within the overall document -->
+
+<!-- 
+  NOTEs: 
+     * child_path$peek() gives path to current script.
+     * before starting a child document, do 
+         "child_path$push(file.path(child_path$peek(),rel_path))" first, 
+         where rel_path is the relative path to the child
+     * after a child document has finished, do "child_path$pop()" to return to current path value
+-->
+
+<!-- if not child doc, set up required objects -->
+```{r}
+#| label: OtherData_setup
+#| eval: !expr '!knitr::opts_knit$get("child")'
+#| results: "asis"
+  testing = params$testing;
+  if (testing) cat(params$setup,"\n\n")
+  source(params$setup);
+  if (testing) cat("root = ",root,"\n\n")
+```
+
+```{r}
+#| label: setup_OtherData
+#| results: 'asis'
+  require(ggplot2);
+  require(kableExtra);
+  require(tables);
+  Sum = wtsUtilities::Sum;
+  old_thm = ggplot2::theme_set(cowplot::theme_cowplot(font_size = 10) +
+                               cowplot::background_grid() +
+                               cowplot::panel_border());
+  thm = wtsPlots::getStdTheme();
+  options("readr.show_col_types"=FALSE);
+  if (testing) cat("dirThs =",child_path$peek(),"\n\n")
+  if (!exists("s"))
+    s = wtsUtilities::getObj(file.path(child_path$peek(),"../rda_AssessmentSetup.RData"));
+  if (!exists("allABs")) 
+    allABs = wtsUtilities::getObj(s$fnDataAllABs);
+  if (!exists("allZCs")) 
+    allZCs = wtsUtilities::getObj(s$fnDataAllZCs);
+  currYr = wtsQMD::crabYear(s$asmtYr-1);
+
+```
+
+# Tables
+
+```{r makeTbl1}
+  dfrRC = allABs$dfrABs |> dplyr::filter(catch_type=="retained");
+  mxYr = max((dfrRC |> dplyr::filter(nationality!="domestic"))$year);
+  dfrFF = dfrRC |> dplyr::filter(year<=mxYr);
+  dfrT  = dfrFF |> dplyr::group_by(dplyr::across(c(-biomass_mt,-nationality))) |> 
+                   dplyr::summarize(biomass_mt=wtsUtilities::Sum(biomass_mt)) |> 
+                   dplyr::ungroup() |>
+                   dplyr::mutate(nationality="Total");
+  dfrL = dplyr::bind_rows(dfrFF,dfrT) |> 
+            dplyr::mutate(nationality=factor(nationality,levels=c("domestic","Japan","Russia","Total"))) |> 
+            dplyr::arrange(nationality);
+  dfrW = dfrL |> dplyr::select(year,nationality,biomass_mt) |>
+            tidyr::pivot_wider(names_from="nationality",values_from="biomass_mt");
+```
+
+## dataframe-to-kable portrait table
+
+@tbl-Dfr2Kbl shows a straight dataframe-to-kable table with portrait orientation and big.mark=",".
+```{r}
+#| label: tbl-Dfr2Kbl
+  kbl = dfrW |> kableExtra::kbl(booktabs=TRUE,digits=4,format.args=list(big.mark=","),
+                                longtable=FALSE,escape=TRUE) |> 
+                 kableExtra::kable_styling(bootstrap_options="bordered",
+                                           latex_options=c("striped","HOLD_position"));
+  lbl = getLabel();
+  cap = "Straightforward table: dataframe -> kbl. Portrait.";
+  lstTbls[[lbl]] = list(lbl=lbl,cap=cap,tbl=kbl);
+  rm(lbl,cap,kbl);
+```
+
+## dataframe-to-kable landscape table
+
+@tbl-Dfr2KblL shows a straight dataframe-to-kable table with landscape orientation.
+```{r}
+#| label: tbl-Dfr2KblL
+  kbl = dfrW |> kableExtra::kbl(booktabs=TRUE,digits=4) |> 
+               kableExtra::kable_styling(bootstrap_options="bordered",
+                                         latex_options=c("striped","HOLD_position"));
+  lbl = getLabel();
+  cap = "Straightforward table: dataframe -> kbl. Landscape.";
+  lstTbls[[lbl]] = list(lbl=lbl,cap=cap,tbl=kbl,ori="L");
+  rm(lbl,cap,kbl);
+```
+
+## dataframe-to-kable "here"
+
+```{r hereTable1,results='asis'}
+  kbl = dfrW |> kableExtra::kbl(booktabs=TRUE,digits=4,format.args=list(big.mark=","),
+                                longtable=FALSE,escape=TRUE) |> 
+                 kableExtra::kable_styling(bootstrap_options="bordered",
+                                           latex_options=c("striped","HOLD_position"));
+  print(kbl);
+```
+
+## dataframe-to-kable "here" with scaling
+
+```{r hereTable2,results='asis'}
+  kbl = dfrW |> kableExtra::kbl(booktabs=TRUE,digits=4,format.args=list(big.mark=","),
+                                longtable=FALSE,escape=TRUE) |> 
+                 kableExtra::kable_styling(bootstrap_options="bordered",
+                                           latex_options=c("striped","HOLD_position","scale_down"));
+  print(kbl);
+```
+
+@tbl-tblr1.
+
+```{r}
+#| label: tbl-tblr1
+  tblr = tabular(Factor(year)~DropEmpty("--","cell") * 
+                                nationality*biomass_mt*sum,
+                 data=dfrL);
+  colLabels(tblr) = colLabels(tblr)[2,]
+  kbl = wtsQMD::convert_tblr_to_kbl(tblr,c(1,5),isHTM,scale_down=TRUE) |> 
+         kableExtra::kable_styling(font_size=9);
+  lbl = wtsQMD::getLabel();
+  cap = paste0("tblr-to-kbl,scale_down,ks font_size=9");
+  lstTbls[[lbl]] = list(lbl=lbl,cap=cap,tbl=kbl);
+```
+
+```{r tables,eval=TRUE}
+#| results: asis
+  if (length(lstTbls)>0){
+    cat("{{< pagebreak >}}\n\n")
+    cat("## Tables ##\n\n")
+    #if (knitr::is_latex_output()) cat("\\FloatBarrier\n\n");
+    for (lst in lstTbls){
+      if (knitr::is_latex_output() && !is.null(lst$ori)) {
+        cat("\\KOMAoptions{paper=landscape,pagesize}\n",
+            "\\recalctypearea\n\n");
+      }
+      cat("::: {#",lst$lbl," .cell tbl-cap='",lst$cap,"'}\n",sep="")
+      cat("::: {.cell-output-display}\n");
+      if (knitr::is_html_output()){
+          cat("`````{=html}\n")
+          cat(lst$tbl); cat("\n");
+          cat("`````\n\n");
+      } else if (knitr::is_latex_output()){
+        if (!is.null(lst$fontsize)) cat(paste0("\\begin{",lst$fontsize,"}\n\n"));
+        cat(lst$tbl); cat("\n");
+        if (!is.null(lst$fontsize)) cat(paste0("\\end{",lst$fontsize,"}\n\n"));
+      }
+      cat(":::\n");
+      cat(":::\n\n");
+      if (knitr::is_latex_output()) {
+        cat("{{< pagebreak >}}\n\n");
+        if (!is.null(lst$ori)) {
+          cat("\\KOMAoptions{paper=portrait,pagesize}\n",
+              "\\recalctypearea\n\n");
+        }
+      }
+    }#--lst
+  }
+```
+
+

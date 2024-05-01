@@ -9,6 +9,7 @@
 #' @param replaceNAs - string to replace NAs with (default=NULL does nothing)
 #' @param col_spec - vector of column ids to apply "border_right" to using [kableExtra::column_spec()]
 #' @param position - character indicating position (latex output only: "h", "t","p")
+#' @param digitis - max number of digits for numeric columns. Can also be a vector of length ncol(dfr).
 #' @param format.args - passed on to [kableExtra::kbl()]
 #' @param scale_down - flag to scale font size down to fit table within margins (latex output only)
 #' @param ltx_font_size - font size for latex table (NULL gives default font size)
@@ -27,6 +28,7 @@ doKbl<-function(dfr,
                 longtable=TRUE,
                 replaceNAs=NULL,
                 position="h",
+                digits=getOption("digits"),
                 format.args=list(big.mark=","),
                 bootstrap_options=c("striped","condensed"),
                 latex_options=c("striped","repeat_header"),
@@ -37,7 +39,7 @@ doKbl<-function(dfr,
   nr = nrow(dfr);
   if (scale_down) latex_options = c(latex_options,"scale_down");
   kbl = dfr |>
-            kableExtra::kbl(booktabs=booktabs,format.args=format.args,
+            kableExtra::kbl(booktabs=booktabs,digits=digits,format.args=format.args,
                             position=position,longtable=longtable) |>
             kableExtra::kable_styling(bootstrap_options=bootstrap_options,
                                       latex_options=latex_options);

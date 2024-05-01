@@ -16,6 +16,7 @@
     }
     ctr = 0;
     cat("{{< pagebreak >}}\n\n")
+    if (knitr::is_latex_output()) cat("\\FloatBarrier\n\n");
     cat("# Tables {-}\n\n")
     if (knitr::is_latex_output()) cat("\\listoftables\n\n\\FloatBarrier\n\n")
     #if (knitr::is_latex_output()) cat("\\FloatBarrier\n\n");
@@ -58,6 +59,7 @@
         }#--latex?
       }#--section?
     }#--lst
+    if (knitr::is_latex_output()) cat("\\FloatBarrier\n\n");
     tmplst = list();
     for (nm in names(lstTbls)) {
       lst = lstTbls[[nm]];

@@ -13,12 +13,16 @@
 #'
 imageAsKable<-function(fn){
   if (isOutputPDF()){
-    str = paste0("\\begin{table}[H]\n",
-                "\\centering\n",
-                "\\begin{tabular}{c}\n",
+    # str = paste0("\\begin{table}[H]\n",
+    #             "\\centering\n",
+    #             "\\begin{tabular}{c}\n",
+    #             "\\includegraphics{",fn,"}\n",
+    #             "\\end{tabular}\n",
+    #             "\\end{table}\n"
+    #             );
+    str = paste0("\\begin{tabular}{c}\n",
                 "\\includegraphics{",fn,"}\n",
-                "\\end{tabular}\n",
-                "\\end{table}\n"
+                "\\end{tabular}\n"
                 );
     return(str);
   }

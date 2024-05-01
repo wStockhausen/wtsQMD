@@ -27,3 +27,24 @@ escapeChars<-function(x,env="latex"){
   return(x);
 }
 
+#'
+#' @title Escape strings for QMD processing
+#' @description Function to escape strings for QMD processing.
+#' @param str - string to escape
+#' @return string with special QMD characters escaped with "\\" so [cat]'ed result
+#' has properly-escaped character.
+#' @details
+#' The following characters will be escaped:
+#' \itemize{
+#' \item{' - single quote}
+#' \item{" - double quote}
+#' }
+#' @importFrom stringr str_replace_all
+#' @export
+#'
+escapeQMD<-function(str){
+  str = stringr::str_replace_all(str,pattern=stringr::fixed("'"),replacement="\\'");
+  str = stringr::str_replace_all(str,pattern=stringr::fixed('"'),replacement='\\"');
+  return(str);
+}
+

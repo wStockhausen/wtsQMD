@@ -8,7 +8,7 @@ getLabel(xtra = NULL)
 }
 \arguments{
 \item{xtra}{\itemize{
-\item extra string to  add to default label
+\item extra string toadd to default label
 }}
 }
 \value{
@@ -19,6 +19,13 @@ Function to create a Quarto/knitr chunk label.
 }
 \details{
 If the function is not run within the context of a knitr chunk,
-then 'lbl' is used as the default label. Non-alphanumeric characters in \code{xtra}
-are replaced by "-" in order to conform to Quarto labels
+then 'lbl' is used as the default label.
+
+If the chunk label starts with "tbl_" or "fig_", it is assumed that the
+associated chunk output is a table or figure that should be indexed and
+cross-referenced, so the "_" is replaced by "-" in order that Quarto/Pandoc's
+automatic indexing tracks the output correctly.
+
+Non-alphanumeric characters in \code{xtra}
+are replaced by "-" in order to conform to Quarto labels.
 }

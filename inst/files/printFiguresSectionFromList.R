@@ -12,10 +12,11 @@ if (!exists("reorderFigures")) reorderFigures = FALSE;
         } else {
           lstFigs = lstFigs[dfr$lbl];
         }
-      } else warning("Tables not reordered. 'r_reorderTbls.csv' dos not exist.")
+      } else warning("Tables not reordered. 'r_reorderFigs.csv' dos not exist.")
     }
     ctr = 0;
     if (length(lstTbls)==0) cat("{{< pagebreak >}}\n\n");
+    if (knitr::is_latex_output()) cat("\\FloatBarrier\n\n");
     cat("# Figures {-}\n\n")
     if (knitr::is_latex_output()) cat("\\listoffigures\n\n\\FloatBarrier\n\n")
     #if (knitr::is_html_output()){
@@ -42,6 +43,7 @@ if (!exists("reorderFigures")) reorderFigures = FALSE;
           if (ctr!=last) cat("{{< pagebreak >}}\n\n");#--insert page break
         }
       } #--lst
+    if (knitr::is_latex_output()) cat("\\FloatBarrier\n\n");
     #}
     tmplst = list();
     for (nm in names(lstFigs)) {

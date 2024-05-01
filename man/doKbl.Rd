@@ -12,6 +12,7 @@ doKbl(
   longtable = TRUE,
   replaceNAs = NULL,
   position = "h",
+  digits = getOption("digits"),
   format.args = list(big.mark = ","),
   bootstrap_options = c("striped", "condensed"),
   latex_options = c("striped", "repeat_header"),
@@ -67,6 +68,10 @@ doKbl(
 
 \item{col_spec}{\itemize{
 \item vector of column ids to apply "border_right" to using \code{\link[kableExtra:column_spec]{kableExtra::column_spec()}}
+}}
+
+\item{digitis}{\itemize{
+\item max number of digits for numeric columns. Can also be a vector of length ncol(dfr).
 }}
 }
 \value{

@@ -1,18 +1,28 @@
 #'
 #' @title Create a Quarto/knitr chunk label
 #' @description Function to create a Quarto/knitr chunk label.
-#' @param xtra - extra string to  add to default label
+#' @param xtra - extra string toadd to default label
 #' @return a string
 #' @details If the function is not run within the context of a knitr chunk,
-#' then 'lbl' is used as the default label. Non-alphanumeric characters in \code{xtra}
-#' are replaced by "-" in order to conform to Quarto labels
+#' then 'lbl' is used as the default label.
+#'
+#' If the chunk label starts with "tbl_" or "fig_", it is assumed that the
+#' associated chunk output is a table or figure that should be indexed and
+#' cross-referenced, so the "_" is replaced by "-" in order that Quarto/Pandoc's
+#' automatic indexing tracks the output correctly.
+#'
+#' Non-alphanumeric characters in \code{xtra}
+#' are replaced by "-" in order to conform to Quarto labels.
+#'
 #' @import knitr
+#' @importFrom stringr str_replace
 #' @importFrom stringr str_replace_all
 #' @export
 #'
 getLabel<-function(xtra=NULL){
   lbl = knitr::opts_current$get("label");
   if (is.null(lbl)) lbl = "lbl";
+  lbl = stringr::str_replace(lbl,"^tbl_","tbl-")
   if (!is.null(xtra)) {
     xtra = stringr::str_replace_all(xtra,"[^[[a-z][A-Z][0-9]]]","-");
     lbl = paste0(lbl,xtra);

@@ -2,7 +2,7 @@
 % Please edit documentation in R/r_TableFunctions.Params.R
 \name{doTable.ParamVals}
 \alias{doTable.ParamVals}
-\title{Create a tabular object for parameters-at-bounds}
+\title{Create a tabular object for parameter values for TCSAM02 models}
 \usage{
 doTable.ParamVals(
   dfr,
@@ -47,5 +47,5 @@ doTable.ParamVals(
 tabular object
 }
 \description{
-Function to create a tabular object for parameters-at-bounds
+Function to create a tabular object for parameter values for TCSAM02 models.
 }

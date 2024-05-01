@@ -1,6 +1,6 @@
 #'
-#' @title Create a tabular object for parameters-at-bounds
-#' @description Function to create a tabular object for parameters-at-bounds
+#' @title Create a tabular object for parameters-at-bounds for TCSAM02 models
+#' @description Function to create a tabular object for parameters-at-bounds for TCSAM02 models.
 #' @param dfr - dataframe from call to [rCompTCMs::extractMDFR.Results.ParametersAtBounds()]
 #' @return tabular object
 #'
@@ -22,8 +22,8 @@ doTable.PsAtBs<-function(dfr){
 }
 
 #'
-#' @title Create a tabular object for parameters-at-bounds
-#' @description Function to create a tabular object for parameters-at-bounds
+#' @title Create a tabular object for parameter values for TCSAM02 models
+#' @description Function to create a tabular object for parameter values for TCSAM02 models.
 #' @param dfr - dataframe from call to [rCompTCMs::extractMDFR.Results.ParameterValues()]
 #' @param ctgs -  parameter categories to select  (default=NULL; i.e., all)
 #' @param prcs -  parameter processes to select   (default=NULL; i.e., all)
@@ -66,6 +66,13 @@ doTable.ParamVals<-function(dfr,ctgs=NULL,prcs=NULL,lbls=NULL,nams=NULL,
 
   if (!is.null(grep_names)) tmp = tmp |> dplyr::filter(grepl(grep_names,name));
 
+  tmp = tmp |> dplyr::mutate(final_param_value=ifelse(abs(final_param_value)<0.00001,0,final_param_value),
+                             stdv=ifelse(stdv<0.0001,0,stdv));
+  tmp = tmp |> dplyr::mutate(final_param_value=signif(final_param_value,digits=5),
+                             stdv=signif(stdv,digits=3));
+
+  f1<-function(x){formatC(x,digits=4,format="g",flag="#")};
+  f2<-function(x){formatC(x,digits=2,format="g",flag="#")};
   if (param_type=="number"){
     tmp = tmp |> dplyr::filter(stringr::str_trim(type) %in% c("param_init_number","param_init_bounded_number")) |>
              dplyr::select(case,process,label,type,name,estimate=final_param_value,`std. dev.`=stdv) |>
@@ -74,7 +81,7 @@ doTable.ParamVals<-function(dfr,ctgs=NULL,prcs=NULL,lbls=NULL,nams=NULL,
                            name=as.factor(name),
                            label=as.factor(label));
     tbl = tabular(process*name*label~
-                    case*(estimate+`std. dev.`)*sum*DropEmpty(empty="--",which=c("row","cell")),
+                    case*(estimate*Format(f1())*sum+`std. dev.`*Format(f2())*sum)*DropEmpty(empty="--",which=c("row","cell")),
                   data=tmp);
   } else {
     tmp = tmp |> dplyr::filter(!(stringr::str_trim(type) %in% c("param_init_number","param_init_bounded_number"))) |>
@@ -85,7 +92,7 @@ doTable.ParamVals<-function(dfr,ctgs=NULL,prcs=NULL,lbls=NULL,nams=NULL,
                            index=as.factor(index),
                            label=as.factor(label));
     tbl = tabular(process*name*label*index~
-                    case*(estimate+`std. dev.`)*sum*DropEmpty(empty="--",which=c("row","cell")),
+                    case*(estimate*Format(f1())*sum+`std. dev.`*Format(f2())*sum)*DropEmpty(empty="--",which=c("row","cell")),
                   data=tmp);
   }
   colLabels(tbl) = colLabels(tbl)[c(2,3),];

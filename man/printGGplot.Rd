@@ -12,6 +12,7 @@ printGGplot(
   asp = NULL,
   wid = NULL,
   dpi = NULL,
+  ori = "P",
   xtraLbl = NULL,
   xtraFigFN = xtraLbl,
   xtraCap = NULL
@@ -44,6 +45,10 @@ printGGplot(
 
 \item{dpi}{\itemize{
 \item dots-per-inch (OPTIONAL)
+}}
+
+\item{ori}{\itemize{
+\item orientation ("P": portrait (default); "L": landscape)
 }}
 
 \item{xtraLbl}{\itemize{

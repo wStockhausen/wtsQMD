@@ -8,6 +8,7 @@
 #' @param asp - figure aspect (height/width) (OPTIONAL)
 #' @param wid - figure width (inches) (OPTIONAL)
 #' @param dpi - dots-per-inch (OPTIONAL)
+#' @param ori - orientation ("P": portrait (default); "L": landscape)
 #' @param xtraLbl - extra string to add to label (helpful for printing multiple plots in the same chunk) (OPTIONAL)
 #' @param xtraFigFN - extra string to add to path to saved figure (defaults to `xtraLbl`) (OPTIONAL)
 #' @param xtraCap - extra string to add to caption. (OPTIONAL)
@@ -20,7 +21,7 @@
 #' @export
 #'
 printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
-                      asp=NULL,wid=NULL,dpi=NULL,
+                      asp=NULL,wid=NULL,dpi=NULL,ori="P",
                       xtraLbl=NULL,xtraFigFN=xtraLbl,xtraCap=NULL){
   lstFigs = NULL;
   if (!isOutputPDF()) {print(p);} else {
@@ -32,7 +33,7 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
     if (is.null(pth)) pth = wtsQMD::getFigFN(xtraFigFN);
     if (is.null(cap)) cap = wtsQMD::getFigCaption(xtraCap);
     lstFigs = list();
-    lstFigs[[lbl]] = list(lbl=lbl,cap=cap,pth=pth,wid=wid,dpi=dpi);#--could give hgt here, as well, but  ggsave takes care of it?
+    lstFigs[[lbl]] = list(lbl=lbl,cap=cap,pth=pth,wid=wid,dpi=dpi,ori=ori);#--could give hgt here, as well, but  ggsave takes care of it?
     ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
   }
   return(lstFigs)

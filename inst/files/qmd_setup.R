@@ -11,19 +11,23 @@
     if (testing) cat("root is NULL or empty\n\n",sep="");
     #--for testing running individual chunks
     if (rstudioapi::isAvailable()) {#--use folder of active document
-      if (testing) cat("Setting child_path to active document path.\n\n")
-      child_path$push(dirname(rstudioapi::getActiveDocumentContext()$path));
+      dn = dirname(rstudioapi::getActiveDocumentContext()$path);
+      if (testing) {
+        cat("rstudioapi::isAvailable()==TRUE.\n")
+        cat("Setting child_path to active document path '",dn,"'.\n\n",sep="");
+      }
+      child_path$push(dn);
     } else {
-      if (testing) cat("Setting child_path to '.'.\n\n")
+      if (testing) cat("rstudioapi::isAvailable() = FALSE. Setting child_path to '.'.\n\n")
       child_path$push(".");#--default to current folder
     }
   } else {
-    if (testing) cat("Setting child_path to root.\n\n")
+    if (testing) cat("Setting child_path to root.\n\n");
     child_path$push(root);#--set toplevel folder to root
   }
   if (testing){
     cat("In qmd_setup:\n\n");
-    cat("root = '",root,"'\n\n",sep="");
+    cat("root = '",root,"'\n",sep="");
     cat("peek = '",child_path$peek(),"'\n\n",sep="");
   }
   dirFigs = file.path(child_path$peek(),"figures",dirname(knitr::fig_path()));

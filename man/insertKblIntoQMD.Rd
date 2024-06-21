@@ -24,22 +24,25 @@ insertKblIntoQMD(kbl, lbl, cap = lbl, ori = "L")
 }}
 }
 \value{
-list if output environment is latex, otherwise NULL
+a list wrapped in a list if output environment is latex, otherwise NULL (see \link{details})
 }
 \description{
 Function to insert (print) a \link{knitr} \code{kable} object into a QMD (Quarto markdown) document.
 }
 \details{
-This resulting table will be
-\itemize{
-\item{printed "here" in the text if the output environment is html}
-\item{printed in the Tables section in the text if the output environment is latex}
-}
-
-If the output environment is latex, then a list to add to a \code{lstTbls}
-list is returned, otherwise an invisible NULL is returned.
-
-If the output environment is not latex, a QMD cell with table caption is printed via \link{cat}
+If the output environment is \emph{not} latex, the resulting table will be printed "here" in the text.
+To do this, a QMD cell with table caption is printed via \link{cat}
 to the output environment (typically an intermediate markdown file used in the
-process of creating the final output).
+process of creating the final output). The value returned by the function is NULL.
+
+If the output environment is latex, then a list is returned that should be added to \code{lstTbls}
+to be printed in the Tables section. If \code{lst} is the returned list, there are two ways to do this:
+\itemize{
+\item{\code{lstTbls = c(lstTbls,lst);}}
+\item{\code{lstTbls[[lbl]] = lst[[1]];}}
+}
+where \code{lbl} in the latter has the same value as the input parameter \code{lbl}.
+
+The following will work in either latex or html output environments:\cr
+\code{  lstTbls = c(lstTbls,insertKblIntoQMD(kbl,lbl,cap,ori));}
 }

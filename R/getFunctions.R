@@ -32,9 +32,11 @@ getLabel<-function(xtra=NULL){
 #'
 #' @title Get a Quarto/knitr chunk figure caption
 #' @description Function to get a Quarto/knitr chunk figure caption.
-#' @param xtra - extra string to  add to caption
+#' @param xtra - extra string (or expression) to  add to caption
 #' @return a string
-#' @details If the function is not run within the context of a knitr chunk,
+#' @details The function obtains the figure caption using `knitr::opts_current$get("fig.cap")`.
+#' If the result is an expression, it is evaluated in the parent frame of the caller.
+#' If the function is not run within the context of a knitr chunk,
 #' then 'Figure' is used as the default caption.
 #' @importFrom knitr opts_current
 #' @export
@@ -42,8 +44,11 @@ getLabel<-function(xtra=NULL){
 getFigCaption<-function(xtra=NULL){
   cap = knitr::opts_current$get("fig.cap");
   if (is.null(cap)) cap = "Figure";
-  if (!is.null(xtra))
+  if (is.expression(cap)) cap = eval(cap);
+  if (!is.null(xtra)){
+    if (is.expression(xtra)) xtra = eval(xtra);
     cap = paste0(cap,xtra);
+  }
   return(cap);
 }
 #'

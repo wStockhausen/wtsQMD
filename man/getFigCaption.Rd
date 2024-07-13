@@ -8,7 +8,7 @@ getFigCaption(xtra = NULL)
 }
 \arguments{
 \item{xtra}{\itemize{
-\item extra string to  add to caption
+\item extra string (or expression) to  add to caption
 }}
 }
 \value{
@@ -18,6 +18,8 @@ a string
 Function to get a Quarto/knitr chunk figure caption.
 }
 \details{
+The function obtains the figure caption using \code{knitr::opts_current$get("fig.cap")}.
+If the result is an expression, it is evaluated in the parent frame of the caller.
 If the function is not run within the context of a knitr chunk,
 then 'Figure' is used as the default caption.
 }

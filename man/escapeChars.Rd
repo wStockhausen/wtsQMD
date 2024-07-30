@@ -22,6 +22,8 @@ character vector with special characters escaped.
 Function to escape special characters in character vector.
 }
 \details{
-Currently escapes the following characters: "&", "\%", "_" in
+Currently escapes the following characters: "&", "\%", "_", and "'" in
 a latex environment.
+
+"'" is escaped by substituting "\\textquotesingle " from the latex \code{textcomp} package.
 }

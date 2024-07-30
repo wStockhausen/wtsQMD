@@ -32,7 +32,8 @@
           #     "\\recalctypearea\n\n");
           # cat("\\begin{landscape}\n\n");
         }
-        cat("::: {#",lst$lbl," .cell tbl-cap='",lst$cap,"'}\n",sep="")
+        cap = escapeChars(lst$cap);
+        cat("::: {#",lst$lbl," .cell tbl-cap='",cap,"'}\n",sep="")
         cat("::: {.cell-output-display}\n");
         if (knitr::is_html_output()){
             cat("`````{=html}\n")
@@ -61,13 +62,13 @@
     }#--lst
     if (knitr::is_latex_output()) cat("\\FloatBarrier\n\n");
     tmplst = list();
-    for (nm in names(lstTbls)) {
-      lst = lstTbls[[nm]];
+    for (t in 1:nTbls) {
+      lst = lstTbls[[t]];
       if (!("section" %in% names(lst)))
-        tmplst[[nm]] = tibble::as_tibble(lst) |> dplyr::select(!tbl);
+        tmplst[[t]] = tibble::as_tibble(lst) |> dplyr::select(!tbl);
     }
     dfrTbls = dplyr::bind_rows(tmplst);
     readr::write_csv(dfrTbls,file.path(child_path$peek(),"r_ListForTablesInfo.csv"));
-    wtsUtilities::saveObj(lstTbls,file.path(child_path$peek(),"r_ListForTables.RData"));
+    wtsUtilities::saveObj(lstTbls,file.path(child_path$peek(),"r_ListForTablesInfo.RData"));
     rm(tmplst,lst,dfrTbls);
   }

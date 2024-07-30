@@ -46,7 +46,7 @@ convert_tblr_to_kbl<-function(tblr,col_spec,isHTM=NULL,isPDF=NULL,
     latex_options="repeat_header";
     if (nrow(tblr)>1) latex_options = c(latex_options,"striped");
     if (scale_down)   latex_options = c(latex_options,"scale_down");
-    kbl = tblr |> tables::toKable(booktabs=FALSE) |>
+    kbl = tblr |> tables::toKable(format="latex",booktabs=FALSE) |>
                    kableExtra::kable_styling(latex_options=latex_options,
                                              font_size=ltx_font_size);
     if (!is.null(replaceNAs)){

@@ -32,7 +32,8 @@ if (!exists("reorderFigures")) reorderFigures = FALSE;
           if (lscp) cat("\\landscape\n\n");
           cat("::: {.cell}\n",sep="")
           cat("::: {.cell-output-display}\n");
-          cat("![",lst$cap,"](",wtsUtilities::abs_to_rel(lst$pth,root),"){#",lst$lbl,sep="");
+          cap = escapeChars(lst$cap);
+          cat("![",cap,"](",wtsUtilities::abs_to_rel(lst$pth,root),"){#",lst$lbl,sep="");
           if (!is.null(lst$wid)) cat(" width=",lst$wid*lst$dpi,sep="");
           if (!is.null(lst$hgt)) cat(" height=",lst$hgt*lst$dpi,sep="");
           cat("}\n");

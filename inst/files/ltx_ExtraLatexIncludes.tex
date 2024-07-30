@@ -21,6 +21,8 @@
 %--\usepackage{floatrow}  %--resets a bunch of stuff
 \usepackage{setspace}   %--not req'd by kableExtra
 
+\usepackage{textcomp}  %--req'd to use \textquotesingle
+
 %--turn on page numbering
 \pagenumbering{arabic}
 %--turn off page numbering
@@ -31,14 +33,14 @@
 \setlength{\LTcapwidth}{1.0\linewidth}       %--for use with longtable
 %--set up table floats
 \captionsetup[table]{position        = above,
-                     justification   = raggedright, 
+                     justification   = raggedright,
                      labelsep        = period,
                      singlelinecheck = false}
 % \floatsetup[table]{capposition=top,
 %                    captionskip=0pt}
 %--set up figure floats
 \captionsetup[figure]{position       = below,
-                     justification   = raggedright, 
+                     justification   = raggedright,
                      labelsep        = period,
                      singlelinecheck = false}
 % \floatsetup[figure]{capposition=bottom,

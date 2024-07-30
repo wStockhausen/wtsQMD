@@ -8,8 +8,10 @@
 #'
 #' @return character vector with special characters escaped.
 #'
-#' @details Currently escapes the following characters: "&", "%", "_" in
+#' @details Currently escapes the following characters: "&", "%", "_", and "'" in
 #' a latex environment.
+#'
+#' "'" is escaped by substituting "\\textquotesingle " from the latex `textcomp` package.
 #'
 #' @export
 #'
@@ -23,6 +25,9 @@ escapeChars<-function(x,env="latex"){
 
     x=gsub("\\_","_",x,fixed=TRUE); #--unescape any already escaped first
     x=gsub("_","\\_",x,fixed=TRUE); #--escape all
+
+    x=gsub("\\'","'",x,fixed=TRUE); #--unescape any already escaped first
+    x=gsub("'","\\textquotesingle ",x,fixed=TRUE); #--replace with code
   }
   return(x);
 }

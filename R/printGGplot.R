@@ -22,13 +22,33 @@
 #'
 printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
                       asp=NULL,wid=NULL,dpi=NULL,ori="P",
-                      xtraLbl=NULL,xtraFigFN=xtraLbl,xtraCap=NULL){
+                      xtraLbl=NULL,xtraFigFN=xtraLbl,xtraCap=NULL,
+                      testing=FALSE){
   lstFigs = NULL;
-  if (!isOutputPDF()) {print(p);} else {
-    if (is.null(dpi)) dpi = knitr::opts_current$get("fig.dpi");
-    if (is.null(dpi)) dpi = 100;#--use as default if not supplied and can't get from knitr
-    if (is.null(wid)) wid = knitr::opts_current$get("fig.width");
-    if (is.null(asp)) asp = knitr::opts_current$get("fig.asp");
+  if (is.null(dpi)) dpi = knitr::opts_current$get("fig.dpi");
+  if (is.null(dpi)) dpi = 100;#--use as default if not supplied and can't get from knitr
+  #knitr::opts_current$set(fig.dpi=dpi);
+  if (testing) cat("dpi = ",dpi,"\n\n")
+  if (is.null(wid)) wid = knitr::opts_current$get("fig.width");
+  #knitr::opts_current$set(fig.wid=wid);
+  if (testing) cat("wid = ",wid,"\n\n")
+  if (is.null(asp)) asp = knitr::opts_current$get("fig.asp");
+  if (testing) cat("asp = ",asp,"\n\n")
+  #knitr::opts_current$set(fig.asp=asp);
+  if (!isOutputPDF()) {
+    figlbl = knitr::opts_current$get("label");
+      if (testing) cat("figlbl = ",figlbl,"\n\n")
+    if (stringr::str_starts(figlbl,"fig_")){
+      if (testing) cat("lbl = ",lbl,"\n\n")
+      if (testing) cat("pth = ",pth,"\n\n")
+      cat("\n::: {.cell-output-display}\n")
+      cat(paste0("![",cap,"](",pth,"){#",lbl," width=",dpi*wid,"}\n"))
+      cat(":::\n\n");
+      ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
+    } else {
+      print(p);
+    }
+  } else {
     if (is.null(lbl)) lbl = wtsQMD::getLabel(xtraLbl);
     if (is.null(pth)) pth = wtsQMD::getFigFN(xtraFigFN);
     if (is.null(cap)) cap = wtsQMD::getFigCaption(xtraCap);

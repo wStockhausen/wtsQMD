@@ -23,6 +23,7 @@ getLabel<-function(xtra=NULL){
   lbl = knitr::opts_current$get("label");
   if (is.null(lbl)) lbl = "lbl";
   lbl = stringr::str_replace(lbl,"^tbl_","tbl-")
+  lbl = stringr::str_replace(lbl,"^fig_","fig-")
   if (!is.null(xtra)) {
     xtra = stringr::str_replace_all(xtra,"[^[[a-z][A-Z][0-9]]]","-");
     lbl = paste0(lbl,xtra);

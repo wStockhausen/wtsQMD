@@ -2,28 +2,32 @@
 % Please edit documentation in R/escapeChars.R
 \name{escapeChars}
 \alias{escapeChars}
-\title{Escape special characters in character vector.}
+\title{Escape special characters in a character vector.}
 \usage{
-escapeChars(x, env = "latex")
+escapeChars(txt, env = "latex", testing = FALSE)
 }
 \arguments{
-\item{x}{\itemize{
-\item character vector in which to escape special characters
+\item{txt}{\itemize{
+\item character string in which to escape special characters
 }}
 
 \item{env}{\itemize{
 \item environment for escaping characters (default="latex")
+}}
+
+\item{testing}{\itemize{
+\item flag for debugging output
 }}
 }
 \value{
 character vector with special characters escaped.
 }
 \description{
-Function to escape special characters in character vector.
+Function to escape special characters in a character string.
 }
 \details{
 Currently escapes the following characters: "&", "\%", "_", and "'" in
-a latex environment.
+a latex environment outside any $-delimited equation sections.
 
 "'" is escaped by substituting "\\textquotesingle " from the latex \code{textcomp} package.
 }

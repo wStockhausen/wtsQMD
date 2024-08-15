@@ -18,6 +18,8 @@
 #' `asp`, `wid`, and `dpi` that are not specified by the user will be taken from [knitr]'s
 #' current chunk options.
 #'
+#' @importFrom ggplot2 ggsave
+#'
 #' @export
 #'
 printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
@@ -27,7 +29,7 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
   lstFigs = NULL;
   if (is.null(dpi)) dpi = knitr::opts_current$get("fig.dpi");
   if (is.null(dpi)) dpi = 100;#--use as default if not supplied and can't get from knitr
-  #knitr::opts_current$set(fig.dpi=dpi);
+  #                       knitr::opts_current$set(fig.dpi=dpi);
   if (testing) cat("dpi = ",dpi,"\n\n")
   if (is.null(wid)) wid = knitr::opts_current$get("fig.width");
   #knitr::opts_current$set(fig.wid=wid);
@@ -36,17 +38,22 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
   if (testing) cat("asp = ",asp,"\n\n")
   #knitr::opts_current$set(fig.asp=asp);
   if (!isOutputPDF()) {
-    figlbl = knitr::opts_current$get("label");
-      if (testing) cat("figlbl = ",figlbl,"\n\n")
-    if (stringr::str_starts(figlbl,"fig_")){
-      if (testing) cat("lbl = ",lbl,"\n\n")
-      if (testing) cat("pth = ",pth,"\n\n")
-      cat("\n::: {.cell-output-display}\n")
-      cat(paste0("![",cap,"](",pth,"){#",lbl," width=",dpi*wid,"}\n"))
-      cat(":::\n\n");
-      ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
+    if (!isOutputHTML()) {
+      print(p);#--not in a pdf or html context
     } else {
-      print(p);
+      #--in an html context
+      figlbl = knitr::opts_current$get("label");
+      if (testing) cat("figlbl = ",figlbl,"\n\n")
+      if (is.null(figlbl)||stringr::str_starts(figlbl,"fig_")){
+        if (testing) cat("lbl = ",lbl,"\n\n")
+        if (testing) cat("pth = ",pth,"\n\n")
+        cat("\n::: {.cell-output-display}\n")
+        cat(paste0("![",cap,"](",pth,"){#",lbl," width=",dpi*wid,"}\n"))
+        cat(":::\n\n");
+        ggplot2::ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
+      } else {
+        print(p);
+      }
     }
   } else {
     if (is.null(lbl)) lbl = wtsQMD::getLabel(xtraLbl);
@@ -54,7 +61,7 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
     if (is.null(cap)) cap = wtsQMD::getFigCaption(xtraCap);
     lstFigs = list();
     lstFigs[[lbl]] = list(lbl=lbl,cap=cap,pth=pth,wid=wid,dpi=dpi,ori=ori);#--could give hgt here, as well, but  ggsave takes care of it?
-    ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
+    ggplot2::ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
   }
   return(lstFigs)
 }

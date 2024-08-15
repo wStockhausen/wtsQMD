@@ -15,7 +15,8 @@ printGGplot(
   ori = "P",
   xtraLbl = NULL,
   xtraFigFN = xtraLbl,
-  xtraCap = NULL
+  xtraCap = NULL,
+  testing = FALSE
 )
 }
 \arguments{

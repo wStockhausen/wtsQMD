@@ -14,9 +14,12 @@
 #' @param xtraCap - extra string to add to caption. (OPTIONAL)
 #' @return NULL, if the [knitr] environment is not latex. Otherwise, a lstFigs list that should be
 #' appended to the QMD's lstFigs list.
+#'
 #' @details All inputs except `p`, the plot to print/save, are optional. Values for `lbl`, `pth`, `cap`
 #' `asp`, `wid`, and `dpi` that are not specified by the user will be taken from [knitr]'s
 #' current chunk options.
+#'
+#' If `p` is (explicitly) NULL, then `pth` should provide a path to a valid image file.
 #'
 #' @importFrom ggplot2 ggsave
 #'
@@ -39,20 +42,30 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
   #knitr::opts_current$set(fig.asp=asp);
   if (!isOutputPDF()) {
     if (!isOutputHTML()) {
-      print(p);#--not in a pdf or html context
+      if (is.null(p)) {
+        message("external immage")
+      } else print(p);#--not in a pdf or html context
     } else {
       #--in an html context
       figlbl = knitr::opts_current$get("label");
       if (testing) cat("figlbl = ",figlbl,"\n\n")
       if (is.null(figlbl)||stringr::str_starts(figlbl,"fig_")){
+        #--faking out Quarto
         if (testing) cat("lbl = ",lbl,"\n\n")
         if (testing) cat("pth = ",pth,"\n\n")
         cat("\n::: {.cell-output-display}\n")
         cat(paste0("![",cap,"](",pth,"){#",lbl," width=",dpi*wid,"}\n"))
         cat(":::\n\n");
-        ggplot2::ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
+        if (!is.null(p))
+          ggplot2::ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
       } else {
-        print(p);
+        #--normal Quarto fig- context
+        if (is.null(p)){
+            #--insert an image filename into markdown
+          cat("\n::: {.cell-output-display}\n")
+          cat(paste0("![",cap,"](",pth,"){#",lbl," width=",dpi*wid,"}\n"))
+          cat(":::\n\n");
+        } else print(p);
       }
     }
   } else {
@@ -61,7 +74,8 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
     if (is.null(cap)) cap = wtsQMD::getFigCaption(xtraCap);
     lstFigs = list();
     lstFigs[[lbl]] = list(lbl=lbl,cap=cap,pth=pth,wid=wid,dpi=dpi,ori=ori);#--could give hgt here, as well, but  ggsave takes care of it?
-    ggplot2::ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
+    if (!is.null(p))
+      ggplot2::ggsave(pth,plot=p,width=wid,height=asp*wid,units="in",dpi=dpi);
   }
   return(lstFigs)
 }

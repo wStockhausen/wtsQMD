@@ -12,6 +12,7 @@
 #' @export
 #'
 imageAsKable<-function(fn){
+  fn = wtsQMD::getImageFN(fn);
   if (isOutputPDF()){
     # str = paste0("\\begin{table}[H]\n",
     #             "\\centering\n",

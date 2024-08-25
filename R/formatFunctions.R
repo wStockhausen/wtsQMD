@@ -212,4 +212,24 @@ numTinKT<-function(x){
   return(numKT(x/1000));
 }
 
+#' @title Create a string of model names
+#' @description Function to create a string of model names.
+#' @param mdls - vector of model names
+#' @return - character string of model names
+#' @details - Collapses model names into a string suitable to
+#' include in a sentence by adding commas and "and" appropriately.
+#' @export
+#'
+getModelsList<-function(mdls){
+  n = length(mdls);
+  if (n==1) {
+    str = mdls[1];
+  } else if (n==2){
+    str = paste(mdls[1],"and",mdls[2]);
+  } else {
+    str = paste(mdls[1:(n-1)],collapse=", ");
+    str = paste0(str,", and ",mdls[n]);
+  }
+  return(str);
+}
 

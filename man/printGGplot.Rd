@@ -75,4 +75,6 @@ Function to "print" ggplot2 figure in a Quarto markdown document.
 All inputs except \code{p}, the plot to print/save, are optional. Values for \code{lbl}, \code{pth}, \code{cap}
 \code{asp}, \code{wid}, and \code{dpi} that are not specified by the user will be taken from \link{knitr}'s
 current chunk options.
+
+If \code{p} is (explicitly) NULL, then \code{pth} should provide a path to a valid image file.
 }

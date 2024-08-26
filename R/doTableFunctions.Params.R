@@ -31,6 +31,7 @@ doTable.PsAtBs<-function(dfr){
 #' @param nams - parameter names to select        (default=NULL; i.e., all)
 #' @param grep_names - flag to select parameter names using grep
 #' @param param_type - string ("number" or "vector")
+#' @param dropPrcLabel - flag to drop process label (default=FALSE)
 #' @return tabular object
 #'
 #' @importFrom stringr str_trim
@@ -41,7 +42,8 @@ doTable.PsAtBs<-function(dfr){
 #' @export
 #'
 doTable.ParamVals<-function(dfr,ctgs=NULL,prcs=NULL,lbls=NULL,nams=NULL,
-                            grep_names=NULL,param_type="number"){
+                            grep_names=NULL,param_type="number",
+                            dropPrcLabel=FALSE){
   tmp = dfr;
   if (!is.null(ctgs))  tmp = tmp |> dplyr::filter(category %in% ctgs) |> dplyr::mutate(category=factor(category,levels=ctgs));
   if (!is.null(prcs))  tmp = tmp |> dplyr::filter(process %in% prcs)  |> dplyr::mutate(process =factor(process,levels=prcs));
@@ -80,9 +82,20 @@ doTable.ParamVals<-function(dfr,ctgs=NULL,prcs=NULL,lbls=NULL,nams=NULL,
                            process=as.factor(process),
                            name=as.factor(name),
                            label=as.factor(label));
-    tbl = tabular(process*name*label~
-                    case*(estimate*Format(f1())*sum+`std. dev.`*Format(f2())*sum)*DropEmpty(empty="--",which=c("row","cell")),
-                  data=tmp);
+    if (dropPrcLabel) {
+      tmp = tmp |> dplyr::select(!process);
+      tbl = tabular(name*label~
+                      case*(Heading(`est.`)*estimate*Format(f1())*sum+
+                              Heading(`sd.`)*`std. dev.`*Format(f2())*sum)*
+                      DropEmpty(empty="--",which=c("row","cell")),
+                    data=tmp);
+    } else {
+      tbl = tabular(process*name*label~
+                      case*(Heading(`est.`)*estimate*Format(f1())*sum+
+                              Heading(`sd.`)*`std. dev.`*Format(f2())*sum)*
+                      DropEmpty(empty="--",which=c("row","cell")),
+                    data=tmp);
+    }
   } else {
     tmp = tmp |> dplyr::filter(!(stringr::str_trim(type) %in% c("param_init_number","param_init_bounded_number"))) |>
              dplyr::select(case,process,label,name,index,estimate=final_param_value,`std. dev.`=stdv) |>
@@ -91,9 +104,20 @@ doTable.ParamVals<-function(dfr,ctgs=NULL,prcs=NULL,lbls=NULL,nams=NULL,
                            name=as.factor(name),
                            index=as.factor(index),
                            label=as.factor(label));
-    tbl = tabular(process*name*label*index~
-                    case*(estimate*Format(f1())*sum+`std. dev.`*Format(f2())*sum)*DropEmpty(empty="--",which=c("row","cell")),
-                  data=tmp);
+    if (dropPrcLabel) {
+      tmp = tmp |> dplyr::select(!process);
+      tbl = tabular(name*label*index~
+                      case*(Heading(`est.`)*estimate*Format(f1())*sum+
+                              Heading(`sd.`)*`std. dev.`*Format(f2())*sum)*
+                      DropEmpty(empty="--",which=c("row","cell")),
+                    data=tmp);
+    } else {
+      tbl = tabular(process*name*label*index~
+                      case*(Heading(`est.`)*estimate*Format(f1())*sum+
+                              Heading(`sd.`)*`std. dev.`*Format(f2())*sum)*
+                      DropEmpty(empty="--",which=c("row","cell")),
+                    data=tmp);
+    }
   }
   colLabels(tbl) = colLabels(tbl)[c(2,3),];
   return(tbl);

@@ -9,6 +9,7 @@
 #' @param wid - figure width (inches) (OPTIONAL)
 #' @param dpi - dots-per-inch (OPTIONAL)
 #' @param ori - orientation ("P": portrait (default); "L": landscape)
+#' @param type - image file type (as string) compatible with [ggplot2::ggsave()], if not NULL (e.g., "png", "pdf","svg")
 #' @param xtraLbl - extra string to add to label (helpful for printing multiple plots in the same chunk) (OPTIONAL)
 #' @param xtraFigFN - extra string to add to path to saved figure (defaults to `xtraLbl`) (OPTIONAL)
 #' @param xtraCap - extra string to add to caption. (OPTIONAL)
@@ -21,12 +22,15 @@
 #'
 #' If `p` is (explicitly) NULL, then `pth` should provide a path to a valid image file.
 #'
+#' If `type` is not NULL, the plot will be output as the specified type at the path given. Potential values
+#' are "png" or "pdf", as well as other options supported by [ggplot2::ggsave()].
+#'
 #' @importFrom ggplot2 ggsave
 #'
 #' @export
 #'
 printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
-                      asp=NULL,wid=NULL,dpi=NULL,ori="P",
+                      asp=NULL,wid=NULL,dpi=NULL,ori="P",type=NULL,
                       xtraLbl=NULL,xtraFigFN=xtraLbl,xtraCap=NULL,
                       testing=FALSE){
   lstFigs = NULL;
@@ -72,6 +76,11 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
     if (is.null(lbl)) lbl = wtsQMD::getLabel(xtraLbl);
     if (is.null(pth)) pth = wtsQMD::getFigFN(xtraFigFN);
     if (is.null(cap)) cap = wtsQMD::getFigCaption(xtraCap);
+    if (!is.null(type)){
+      #--want to substitute "type" for current file extension
+      bn = xfun::sans_ext(pth);
+      pth = xfun::with_ext(bn,type);
+    }
     lstFigs = list();
     lstFigs[[lbl]] = list(lbl=lbl,cap=cap,pth=pth,wid=wid,dpi=dpi,ori=ori);#--could give hgt here, as well, but  ggsave takes care of it?
     if (!is.null(p))

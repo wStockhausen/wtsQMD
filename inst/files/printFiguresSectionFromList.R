@@ -34,8 +34,13 @@ if (!exists("reorderFigures")) reorderFigures = FALSE;
           cat("::: {.cell-output-display}\n");
           cap = escapeChars(lst$cap);
           cat("![",cap,"](",wtsUtilities::abs_to_rel(lst$pth,root),"){#",lst$lbl,sep="");
-          if (!is.null(lst$wid)) cat(" width=",lst$wid*lst$dpi,sep="");
-          if (!is.null(lst$hgt)) cat(" height=",lst$hgt*lst$dpi,sep="");
+          if (knitr::is_latex_output()){
+            if (!is.null(lst$wid)) cat(" width=",lst$wid,"in",sep="");
+            if (!is.null(lst$hgt)) cat(" height=",lst$hgt,"in",sep="");
+          } else {
+            if (!is.null(lst$wid)) cat(" width=",lst$wid*lst$dpi,sep="");
+            if (!is.null(lst$hgt)) cat(" height=",lst$hgt*lst$dpi,sep="");
+          }
           cat("}\n");
           cat(":::\n");
           cat(":::\n\n");

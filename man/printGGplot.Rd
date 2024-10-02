@@ -13,6 +13,7 @@ printGGplot(
   wid = NULL,
   dpi = NULL,
   ori = "P",
+  type = NULL,
   xtraLbl = NULL,
   xtraFigFN = xtraLbl,
   xtraCap = NULL,
@@ -52,6 +53,10 @@ printGGplot(
 \item orientation ("P": portrait (default); "L": landscape)
 }}
 
+\item{type}{\itemize{
+\item image file type (as string) compatible with \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}, if not NULL (e.g., "png", "pdf","svg")
+}}
+
 \item{xtraLbl}{\itemize{
 \item extra string to add to label (helpful for printing multiple plots in the same chunk) (OPTIONAL)
 }}
@@ -77,4 +82,7 @@ All inputs except \code{p}, the plot to print/save, are optional. Values for \co
 current chunk options.
 
 If \code{p} is (explicitly) NULL, then \code{pth} should provide a path to a valid image file.
+
+If \code{type} is not NULL, the plot will be output as the specified type at the path given. Potential values
+are "png" or "pdf", as well as other options supported by \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}.
 }

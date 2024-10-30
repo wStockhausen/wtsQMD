@@ -2,6 +2,7 @@
 #' @title Convert dataframe object to [knitr] \code{kable} object
 #' @description Function to convert dataframe object to [knitr] \code{kable} object.
 #' @param dfr - dataframe to convert
+#' @param align - optional vector specifying column alignment (use 'l','c','r': see [kableExtra::kbl()])
 #' @param border_left - vector of column ids to apply "border_left" to using [kableExtra::column_spec()]
 #' @param border_right - vector of column ids to apply "border_right" to using [kableExtra::column_spec()]
 #' @param booktabs - flag to use booktabs format
@@ -22,6 +23,7 @@
 #' @md
 #' @export
 doKbl<-function(dfr,
+                align=NULL,
                 border_left=NULL,
                 border_right=NULL,
                 booktabs=TRUE,
@@ -39,7 +41,7 @@ doKbl<-function(dfr,
   nr = nrow(dfr);
   if (scale_down) latex_options = c(latex_options,"scale_down");
   kbl = dfr |>
-            kableExtra::kbl(booktabs=booktabs,digits=digits,format.args=format.args,
+            kableExtra::kbl(align=align,booktabs=booktabs,digits=digits,format.args=format.args,
                             position=position,longtable=longtable) |>
             kableExtra::kable_styling(bootstrap_options=bootstrap_options,
                                       latex_options=latex_options);
@@ -61,7 +63,8 @@ doKbl<-function(dfr,
     }
   } else {
     ##--html specs----
-    kbl  = kbl|> kableExtra::row_spec(1:nr,align="c");
+    if (is.null(align))
+      kbl  = kbl|> kableExtra::row_spec(1:nr,align="c");#--apply "center" alignment to all columns
     if (!is.null(border_right)) #--add border to right of columns identified by index
       kbl = kbl |> kableExtra::column_spec(border_right,border_right=TRUE);
     if (!is.null(border_left)) #--add border to left of columns identified by index

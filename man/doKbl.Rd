@@ -6,6 +6,7 @@
 \usage{
 doKbl(
   dfr,
+  align = NULL,
   border_left = NULL,
   border_right = NULL,
   booktabs = TRUE,
@@ -24,6 +25,10 @@ doKbl(
 \arguments{
 \item{dfr}{\itemize{
 \item dataframe to convert
+}}
+
+\item{align}{\itemize{
+\item optional vector specifying column alignment (use 'l','c','r': see \code{\link[kableExtra:kbl]{kableExtra::kbl()}})
 }}
 
 \item{border_left}{\itemize{

@@ -38,29 +38,40 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
                       xtraLbl=NULL,xtraFigFN=xtraLbl,xtraCap=NULL,
                       testing=FALSE){
   lstFigs = NULL;
+
+  #--get label and caption, as necessary
+  if (is.null(lbl)) lbl = wtsQMD::getLabel(xtraLbl);#--corrects for "fig_" or "tbl_"
+  if (testing) warning("lbl = ",lbl,"\n")
+  if (is.null(cap)) cap = wtsQMD::getFigCaption(xtraCap);
+  if (testing) warning("cap = ",cap,"\n");
+    if (is.null(pth)) pth = wtsQMD::getFigFN(xtraFigFN);
+  if (testing) warning("pth = ",pth,"\n");
+
+  #--get dpi, width, and height as necessary
   if (is.null(dpi)) dpi = knitr::opts_current$get("fig.dpi");
   if (is.null(dpi)) dpi = 100;#--use as default if not supplied and can't get from knitr
-  #                       knitr::opts_current$set(fig.dpi=dpi);
-  if (testing) cat("dpi = ",dpi,"\n\n")
+  if (testing) message("dpi = ",dpi,"\n")
   if (is.null(wid)) wid = knitr::opts_current$get("fig.width");
-  #knitr::opts_current$set(fig.wid=wid);
-  if (testing) cat("wid = ",wid,"\n\n")
+  if (testing) message("wid = ",wid,"\n")
   if (is.null(asp)) asp = knitr::opts_current$get("fig.asp");
-  if (testing) cat("asp = ",asp,"\n\n")
-  #knitr::opts_current$set(fig.asp=asp);
+  if (testing) message("asp = ",asp,"\n")
+
   if (!isOutputPDF()) {
+    if (testing) warning("\toutput is not pdf.\n")
     if (!isOutputHTML()) {
+      if (testing) warning("\toutput is not html.\n")
       if (is.null(p)) {
         message("external immage")
       } else print(p);#--not in a pdf or html context
     } else {
       #--in an html context
+      if (testing) warning("\toutput is html.\n")
       figlbl = knitr::opts_current$get("label");
-      if (testing) cat("figlbl = ",figlbl,"\n\n")
+      if (testing) message("figlbl = ",figlbl,"\n\n")
       if (is.null(figlbl)||stringr::str_starts(figlbl,"fig_")){
         #--faking out Quarto
-        if (testing) cat("lbl = ",lbl,"\n\n")
-        if (testing) cat("pth = ",pth,"\n\n")
+        if (testing) message("lbl = ",lbl,"\n")
+        if (testing) message("pth = ",pth,"\n")
         cat("\n::: {.cell-output-display}\n")
         cat(paste0("![",cap,"](",pth,"){#",lbl," width=",dpi*wid,"}\n"))
         cat(":::\n\n");
@@ -73,13 +84,10 @@ printGGplot<-function(p,lbl=NULL,pth=NULL,cap=NULL,
           cat("\n::: {.cell-output-display}\n")
           cat(paste0("![",cap,"](",pth,"){#",lbl," width=",dpi*wid,"}\n"))
           cat(":::\n\n");
-        } else print(p);
+        } else print(p);#--print p, Quarto takes care of everything
       }
     }
   } else {
-    if (is.null(lbl)) lbl = wtsQMD::getLabel(xtraLbl);
-    if (is.null(pth)) pth = wtsQMD::getFigFN(xtraFigFN);
-    if (is.null(cap)) cap = wtsQMD::getFigCaption(xtraCap);
     if (!is.null(type)){
       #--want to substitute "type" for current file extension
       bn = xfun::sans_ext(pth);

@@ -37,7 +37,7 @@
 printRGraphics<-function(p,lbl=NULL,pth=NULL,cap=NULL,
                          asp=NULL,wid=NULL,dpi=NULL,ori="P",type=NULL,
                          xtraLbl=NULL,xtraFigFN=xtraLbl,xtraCap=NULL,
-                         testing=TRUE){
+                         testing=FALSE){
   if (testing) warning("in printRGraphics.\n");
   lstFigs = NULL;
 

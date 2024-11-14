@@ -58,7 +58,7 @@ if (!exists("reorderFigures")) reorderFigures = FALSE;
         tmplst[[nm]] = tibble::as_tibble(lst);
     }
     dfrFigs = dplyr::bind_rows(tmplst);
-    readr::write_csv(dfrFigs,file.path(child_path$peek(),"r_ListForFiguresInfo.csv"));
-    wtsUtilities::saveObj(lstFigs,file.path(child_path$peek(),"r_ListForFigures.RData"));
+    readr::write_csv(dfrFigs,file.path(child_path$peek(),"csv_ListForFiguresInfo.csv"));
+    wtsUtilities::saveObj(lstFigs,file.path(child_path$peek(),"rda_ListForFigures.RData"));
     rm(ctr,tmplst,lst,dfrFigs);
   }

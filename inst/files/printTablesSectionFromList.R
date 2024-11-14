@@ -68,7 +68,7 @@
         tmplst[[t]] = tibble::as_tibble(lst) |> dplyr::select(!tbl);
     }
     dfrTbls = dplyr::bind_rows(tmplst);
-    readr::write_csv(dfrTbls,file.path(child_path$peek(),"r_ListForTablesInfo.csv"));
-    wtsUtilities::saveObj(lstTbls,file.path(child_path$peek(),"r_ListForTablesInfo.RData"));
+    readr::write_csv(dfrTbls,file.path(child_path$peek(),"csv_ListForTablesInfo.csv"));
+    wtsUtilities::saveObj(lstTbls,file.path(child_path$peek(),"rda_ListForTablesInfo.RData"));
     rm(tmplst,lst,dfrTbls);
   }

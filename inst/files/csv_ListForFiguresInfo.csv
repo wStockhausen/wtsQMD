@@ -1,0 +1,4 @@
+lbl,cap,pth,wid,dpi,ori
+fig-Example-ggplot1,Caption for example ggplot1.,/Users/williamstockhausen/Work/Programming/R/GitPackages/wtsQMD/inst/files/figures/Example_files/figure-pdf/fig_Example-ggplot1-1.pdf,6.5,100,P
+fig-Example-ggplot2,Caption for example ggplot2.,/Users/williamstockhausen/Work/Programming/R/GitPackages/wtsQMD/inst/files/figures/Example_files/figure-pdf/fig_Example-ggplot2-1.pdf,9,100,L
+fig-Example-baseRplot,Caption for example base R plot example.,/Users/williamstockhausen/Work/Programming/R/GitPackages/wtsQMD/inst/files/figures/Example_files/figure-pdf/fig_Example-baseRplot-1.pdf,6.5,100,P

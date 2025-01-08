@@ -1,6 +1,7 @@
 ---
 title: "Title"
-author: "Author"
+author: 
+- name: "Author"
   affiliations:
     - id: afsc-refm
       name: "Alaska Fisheries Science Center"
@@ -65,7 +66,7 @@ format:
 echo: false
 warning: false
 results: 'hide'
-keep-md: false
+keep-md: true
 keep-yaml: false
 editor: source
 editor_options: 
@@ -134,9 +135,50 @@ params:
   ##--
 ```
 
-<!-- # Chapter 1 {#sec-Chap1} -->
-<!--```{r main_Chap1, child=file.path(child_path$peek(),"q01_Chap1.qmd"),eval=TRUE}-->
-<!--````-->
+# Chapter 1 {#sec-Chap1}
+
+Example chapter. The link to the chapter heading is [@sec-Chap1]. 
+
+An example citation is @ref-R, or [@ref-R], depending how entered in qmd file..
+
+An example ggplot figure reference is [@fig-Example-ggplot1] (note "fig-" substituted for "fig_" in link name).
+
+
+```{r fig_Example-ggplot1}
+#| results: 'asis'
+#| fig-cap: Caption for example ggplot1.
+#| fig-width: 6.5
+#| fig-asp: 0.5
+  dfr = tibble::tibble(x=1:10,y=1:10);
+  plt = ggplot(dfr,aes(x=x,y=y)) + geom_point();
+  lstFigs = c(lstFigs,wtsQMD::printGGplot(plt,ori="P"));
+  
+```
+
+Another example ggplot figure reference is Figure [-@fig-Example-ggplot2] (the "Figure" is dropped from the link).
+
+```{r fig_Example-ggplot2}
+#| results: 'asis'
+#| fig-width: 9
+#| fig-asp: 0.6
+  dfr = tibble::tibble(x=1:10,y=1:10);
+  plt = ggplot(dfr,aes(x=x,y=y)) + geom_point();
+  cap = "Caption for example ggplot2.";
+  lstFigs = c(lstFigs,wtsQMD::printGGplot(plt,cap=cap,ori="L"));
+  
+```
+
+A base R plot is shown in Figure  [-@fig-Example-baseRplot].
+
+```{r fig_Example-baseRplot}
+#| results: 'asis'
+#| fig-cap: Caption for example base R plot example.
+#| fig-width: 6.5
+#| fig-asp: 0.5
+  dfr = tibble::tibble(x=1:10,y=1:10);
+  lstFigs = c(lstFigs,wtsQMD::printRGraphics(expression(plot(dfr$x,dfr$y)),ori="P"));
+  
+```
 
 <!-- # Chapter 2 {#sec-Chap2} -->
 <!--```{r main_Chap2, child=file.path(child_path$peek(),"q02_Chap2.qmd"),eval=TRUE}-->

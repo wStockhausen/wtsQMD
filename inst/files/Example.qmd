@@ -139,7 +139,14 @@ params:
 
 Example chapter. The link to the chapter heading is [@sec-Chap1]. 
 
-An example citation is @ref-R, or [@ref-R], depending how entered in qmd file..
+An example citation is @ref-R, or [@ref-R], depending how entered in qmd file.
+
+An example referrenced equation:
+
+$$ x = y $$ {#eq-XY}
+
+with link [@eq-XY] or Eq. [-@eq-XY].
+
 
 An example ggplot figure reference is [@fig-Example-ggplot1] (note "fig-" substituted for "fig_" in link name).
 
@@ -166,6 +173,19 @@ Another example ggplot figure reference is Figure [-@fig-Example-ggplot2] (the "
   cap = "Caption for example ggplot2.";
   lstFigs = c(lstFigs,wtsQMD::printGGplot(plt,cap=cap,ori="L"));
   
+```
+
+An example table is shown in Table [-@tbl-XY].
+
+```{r}
+#| results: 'asis'
+  kbl = kableExtra::kbl(dfr);
+  cap = "Example table."
+  lstTbls = c(lstTbls,
+              wtsQMD::insertKblIntoQMD(kbl,
+                                       lbl="tbl-XY", 
+                                       cap=cap,
+                                       ori="P"));
 ```
 
 A base R plot is shown in Figure  [-@fig-Example-baseRplot].

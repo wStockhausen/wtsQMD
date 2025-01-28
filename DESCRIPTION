@@ -1,8 +1,8 @@
 Package: wtsQMD
 Type: Package
 Title: Functions for Quarto markdown documents (QMDs)
-Version: 2025.01.08
-Date: 2025-01-08
+Version: 2025.01.28
+Date: 2025-01-28
 Author: William T. Stockhausen
 Maintainer: <william.stockhausen@noaa.gov>
 Description: Some helpful functions when creating Quarto documents.
@@ -11,8 +11,11 @@ Imports:
     dplyr,
     fastmap,
     flextable,
+    ggplot2,
     kableExtra,
     knitr,
+    magick,
+    readr,
     stringr,
     tables,
     tibble,

@@ -35,7 +35,11 @@ insertFlextableIntoQMD<-function(flx,lbl,cap=lbl,ori="L"){
   } else {
     #--need to convert flx to latex code
     str = flextable:::knit_to_latex(flx, bookdown = FALSE, quarto = TRUE);
-    str = paste0("```{=latex}\n",str,"\n```\n")
+    if (toupper(ori)!="L"){
+     str = paste0("```{=latex}\n",str,"\n```\n")
+    } else {
+      str = paste0("\n",str,"\n")
+    }
     lst = list(lbl=lbl,cap=cap,tbl=str,ori=ori);
     return(list(lst));
   }

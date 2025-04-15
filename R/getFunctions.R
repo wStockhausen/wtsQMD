@@ -68,14 +68,15 @@ getFigCaption<-function(xtra=NULL){
 getFigFN<-function(xtra=NULL){
   if (!exists("dirFigs")) dirFigs = ".";
   if (!exists("def_ext")) def_ext = ifelse(isOutputPDF(),"pdf","png");
+  fp  = knitr::fig_path();
+  xt = xfun::file_ext(fp);
+  if (xt=="") xt = def_ext;
+  bn = basename(xfun::sans_ext(fp));#--file basename
   fn = file.path(dirFigs,basename(xfun::with_ext(knitr::fig_path(),def_ext)))
   if (!is.null(xtra)){
     xtra = stringr::str_replace_all(xtra,"[^[[a-z][A-Z][0-9]]]","-");
-    fp  = knitr::fig_path();
-    xt = xfun::file_ext(fp);
-    if (xt=="") xt = def_ext;
-    bn = paste0(basename(xfun::sans_ext(fp)),xtra);#--add xtra to basename
-    fn = file.path(dirFigs,xfun::with_ext(bn,xt));
+    bn = paste0(bn,xtra);#--add xtra to basename
   }
+  fn = file.path(dirFigs,xfun::with_ext(bn,xt));
   return(fn);
 }

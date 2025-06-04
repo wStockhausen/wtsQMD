@@ -4,7 +4,7 @@
 \alias{sanitizeLabels}
 \title{Sanitize labels by replacing illegal characters with "-"}
 \usage{
-sanitizeLabels(x, env = "latex")
+sanitizeLabels(x, env = "latex", rep = "-")
 }
 \arguments{
 \item{x}{\itemize{
@@ -13,6 +13,10 @@ sanitizeLabels(x, env = "latex")
 
 \item{env}{\itemize{
 \item environment for sanitizing characters (default="latex")
+}}
+
+\item{rep}{\itemize{
+\item replacement text (default: "-")
 }}
 }
 \value{

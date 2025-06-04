@@ -5,6 +5,7 @@
 #'
 #' @param  x - character vector to sanitize
 #' @param env - environment for sanitizing characters (default="latex")
+#' @param rep - replacement text (default: "-")
 #'
 #' @return character vector with sanitized labels.
 #'
@@ -14,16 +15,22 @@
 #'
 #' @export
 #'
-sanitizeLabels<-function(x,env="latex"){
+sanitizeLabels<-function(x,env="latex",rep="-"){
   if (env=="latex"){
     x=gsub("\\&","&",x,fixed=TRUE); #--unescape first
-    x=gsub("&","-",x,fixed=TRUE);
+    x=gsub("&",rep,x,fixed=TRUE);
 
     x=gsub("\\%","%",x,fixed=TRUE); #--unescape first
-    x=gsub("%","-",x,fixed=TRUE);
+    x=gsub("%",rep,x,fixed=TRUE);
 
     x=gsub("\\_","_",x,fixed=TRUE); #--unescape first
-    x=gsub("_","-",x,fixed=TRUE);
+    x=gsub("_",rep,x,fixed=TRUE);
+
+    x=gsub("\\[","[",x,fixed=TRUE); #--unescape first
+    x=gsub("[",rep,x,fixed=TRUE);
+
+    x=gsub("\\]","]",x,fixed=TRUE); #--unescape first
+    x=gsub("]",rep,x,fixed=TRUE);
   }
   return(x);
 }

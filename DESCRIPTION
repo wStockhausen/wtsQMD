@@ -1,8 +1,8 @@
 Package: wtsQMD
 Type: Package
 Title: Functions for Quarto markdown documents (QMDs)
-Version: 2025.04.14
-Date: 2025-04-14
+Version: 2025.05.06
+Date: 2025-05-06
 Author: William T. Stockhausen
 Maintainer: <william.stockhausen@noaa.gov>
 Description: Some helpful functions when creating Quarto documents.
